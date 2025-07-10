@@ -1,23 +1,30 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 
-# 🌈 CSS للتصميم والتنسيق
 st.markdown("""
 <style>
 body, .stApp {
     background: linear-gradient(to bottom right, #044B7F, #00A5A0);
     color: white;
     font-family: 'Segoe UI', sans-serif;
-    font-size: 30px;
+    font-size: 30px;  /* هذا للخط العام */
+}
+
+/* تكبير حجم نص التسميات (Labels) فوق الحقول - اللون أبيض */
+.stTextInput label, 
+.stTextArea label {
+    font-weight: bold;
+    color: white !important;
+    font-size: 30px !important;
 }
 
 /* textarea لـ DNA الطبيعي */
 textarea.stTextArea > div > textarea {
     background-color: white !important;
     color: black !important;
-    font-size: 20px !important;
+    font-size: 20px !important;  /* حجم الخط داخل الصندوق */
     border-radius: 5px !important;
-    height: 100px !important; /* تقريبا 5 أسطر */
+    height: 100px !important;
     padding: 12px !important;
     border: none !important;
     resize: vertical;
@@ -30,14 +37,8 @@ textarea.stTextArea > div > textarea {
     border-radius: 5px;
     height: 45px;
     padding-left: 12px;
-    font-size: 25px;
+    font-size: 20px;  /* حجم الخط داخل الصندوق */
     color: black !important;
-}
-
-.stTextInput label {
-    font-weight: bold;
-    color: #ffffff;
-    font-size: 25px;
 }
 
 .result-box {
@@ -47,10 +48,10 @@ textarea.stTextArea > div > textarea {
     margin-top: 25px;
 }
 
-/* جدول النتائج: الخلايا بخط كبير وبلون أسود، النص انجليزي */
+/* جدول النتائج: حجم خط أصغر ونص أسود */
 .result-box table {
     width: 100%;
-    font-size: 25px;
+    font-size: 18px;  /* حجم الخط داخل الجدول أصغر */
     border-collapse: collapse;
     color: black !important;
     background-color: white !important;
@@ -58,23 +59,22 @@ textarea.stTextArea > div > textarea {
 
 .result-box table td, .result-box table th {
     border: 1px solid #ddd;
-    padding: 15px;
+    padding: 12px;
     text-align: center;
     font-weight: normal;
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* عناوين الأعمدة بالعربي (أبيض) */
+/* رؤوس الجدول بالعربي (أبيض) */
 .result-box table th {
     background-color: #003366;
     color: white !important;
     font-weight: bold;
-    font-size: 27px;
+    font-size: 20px;  /* حجم الخط للعناوين داخل الجدول */
 }
 </style>
 """, unsafe_allow_html=True)
 
-# جدول الكودونات (بالإنجليزية كما طلبت)
 codon_table = {
     'AUG': 'Methionine', 'UUU': 'Phenylalanine', 'UUC': 'Phenylalanine',
     'UUA': 'Leucine', 'UUG': 'Leucine', 'CUU': 'Leucine', 'CUC': 'Leucine',
@@ -143,16 +143,11 @@ def plot_mutation_positions(dna_normal, dna_mutated):
     plt.tight_layout()
     st.pyplot(fig)
 
-# عنوان التطبيق
 st.title("🧬 GeneAI - تحليل الطفرات الجينية")
 
-# حقل textarea لـ DNA الطبيعي (طويل)
 normal_dna = st.text_area("🔬 أدخل تسلسل DNA الطبيعي:", height=100, max_chars=1000)
-
-# حقل input عادي لـ DNA المطفر
 mutated_dna = st.text_input("🧬 أدخل تسلسل DNA بعد الطفرة:")
 
-# عند الإدخال
 if normal_dna and mutated_dna:
     valid = all(base in "ATCGatcg" for base in normal_dna + mutated_dna)
     if not valid:
@@ -165,7 +160,6 @@ if normal_dna and mutated_dna:
         diagnosis = get_known_diagnosis(normal_dna[3:6], mutated_dna[3:6])
         risk = estimate_risk(protein_normal, protein_mutated)
 
-        # عرض النتائج في جدول كبير بالإنجليزية وبخلفية بيضاء ونص أسود
         st.markdown('<div class="result-box">', unsafe_allow_html=True)
         st.markdown(f"""
         <table>
@@ -193,9 +187,7 @@ if normal_dna and mutated_dna:
         """, unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-        # عرض الرسم البياني
         plot_mutation_positions(normal_dna, mutated_dna)
 
-# توقيع المشروع
 st.markdown("---")
 st.caption("🔖 هذا المشروع من تنفيذ الطالبات: **رغد الضويان** و **لانا الشهراني**")

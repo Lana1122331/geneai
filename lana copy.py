@@ -1,7 +1,7 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 
-# CSS تصميم جميل
+# 🌈 CSS للتصميم والتنسيق
 st.markdown("""
 <style>
 body, .stApp {
@@ -10,6 +10,20 @@ body, .stApp {
     font-family: 'Segoe UI', sans-serif;
     font-size: 30px;
 }
+
+/* textarea لـ DNA الطبيعي */
+textarea.stTextArea > div > textarea {
+    background-color: white !important;
+    color: black !important;
+    font-size: 20px !important;
+    border-radius: 5px !important;
+    height: 100px !important; /* تقريبا 5 أسطر */
+    padding: 12px !important;
+    border: none !important;
+    resize: vertical;
+}
+
+/* input عادي لـ DNA المطفر */
 .stTextInput > div > div > input {
     background-color: white;
     border: none;
@@ -19,26 +33,48 @@ body, .stApp {
     font-size: 25px;
     color: black !important;
 }
+
 .stTextInput label {
     font-weight: bold;
     color: #ffffff;
     font-size: 25px;
 }
+
 .result-box {
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 25px;
     margin-top: 25px;
 }
+
+/* جدول النتائج: الخلايا بخط كبير وبلون أسود، النص انجليزي */
 .result-box table {
     width: 100%;
-    color: white;
     font-size: 25px;
+    border-collapse: collapse;
+    color: black !important;
+    background-color: white !important;
+}
+
+.result-box table td, .result-box table th {
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: center;
+    font-weight: normal;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* عناوين الأعمدة بالعربي (أبيض) */
+.result-box table th {
+    background-color: #003366;
+    color: white !important;
+    font-weight: bold;
+    font-size: 27px;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# جدول الكودونات
+# جدول الكودونات (بالإنجليزية كما طلبت)
 codon_table = {
     'AUG': 'Methionine', 'UUU': 'Phenylalanine', 'UUC': 'Phenylalanine',
     'UUA': 'Leucine', 'UUG': 'Leucine', 'CUU': 'Leucine', 'CUC': 'Leucine',
@@ -79,7 +115,7 @@ def detect_mutation_type(normal, mutated):
     return "غير معروف"
 
 def get_known_diagnosis(normal_codon, mutated_codon):
-    return known_mutations.get((normal_codon, mutated_codon), "لا يوجد مرض معروف مرتبط بهذه الطفرة.")
+    return known_mutations.get((normal_codon, mutated_codon), "No known disease associated with this mutation.")
 
 def estimate_risk(protein1, protein2):
     if not protein1 or not protein2:
@@ -98,19 +134,22 @@ def plot_mutation_positions(dna_normal, dna_mutated):
             mutation_positions.append(i // 3 + 1)
     fig, ax = plt.subplots(figsize=(10, 2))
     ax.hlines(1, 1, len(dna_normal) // 3, colors='white', linewidth=3)
-    ax.scatter(mutation_positions, [1] * len(mutation_positions), color='red', s=200, label='موقع الطفرة')
+    ax.scatter(mutation_positions, [1] * len(mutation_positions), color='red', s=200, label='Mutation Site')
     ax.set_ylim(0.8, 1.2)
     ax.set_yticks([])
-    ax.set_xlabel('مواقع الكودونات', fontsize=20)
-    ax.set_title('مواقع الطفرات في تسلسل DNA', fontsize=25)
+    ax.set_xlabel('Codon Positions', fontsize=20, color='white')
+    ax.set_title('Mutation Locations on DNA Sequence', fontsize=25, color='white')
     ax.legend(loc='upper right')
+    plt.tight_layout()
     st.pyplot(fig)
 
 # عنوان التطبيق
 st.title("🧬 GeneAI - تحليل الطفرات الجينية")
 
-# حقول الإدخال
-normal_dna = st.text_input("🔬 أدخل تسلسل DNA الطبيعي:")
+# حقل textarea لـ DNA الطبيعي (طويل)
+normal_dna = st.text_area("🔬 أدخل تسلسل DNA الطبيعي:", height=100, max_chars=1000)
+
+# حقل input عادي لـ DNA المطفر
 mutated_dna = st.text_input("🧬 أدخل تسلسل DNA بعد الطفرة:")
 
 # عند الإدخال
@@ -126,16 +165,30 @@ if normal_dna and mutated_dna:
         diagnosis = get_known_diagnosis(normal_dna[3:6], mutated_dna[3:6])
         risk = estimate_risk(protein_normal, protein_mutated)
 
-        # عرض النتائج
+        # عرض النتائج في جدول كبير بالإنجليزية وبخلفية بيضاء ونص أسود
         st.markdown('<div class="result-box">', unsafe_allow_html=True)
         st.markdown(f"""
         <table>
-        <tr><td><strong>نوع الطفرة</strong></td><td>{mutation_type}</td></tr>
-        <tr><td><strong>mRNA</strong></td><td>{mrna}</td></tr>
-        <tr><td><strong>البروتين الطبيعي</strong></td><td>{' – '.join(protein_normal)}</td></tr>
-        <tr><td><strong>البروتين المطفر</strong></td><td>{' – '.join(protein_mutated)}</td></tr>
-        <tr><td><strong>التشخيص المحتمل</strong></td><td>{diagnosis}</td></tr>
-        <tr><td><strong>نسبة الخطورة</strong></td><td>{risk}%</td></tr>
+        <thead>
+            <tr>
+                <th>نوع الطفرة</th>
+                <th>mRNA</th>
+                <th>البروتين الطبيعي</th>
+                <th>البروتين المطفر</th>
+                <th>التشخيص المحتمل</th>
+                <th>نسبة الخطورة</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{mutation_type}</td>
+                <td>{mrna}</td>
+                <td>{' – '.join(protein_normal)}</td>
+                <td>{' – '.join(protein_mutated)}</td>
+                <td>{diagnosis}</td>
+                <td>{risk}%</td>
+            </tr>
+        </tbody>
         </table>
         """, unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)

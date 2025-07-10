@@ -8,7 +8,7 @@ body, .stApp {
     background: linear-gradient(to bottom right, #044B7F, #00A5A0);
     color: white;
     font-family: 'Segoe UI', sans-serif;
-    font-size: 20px;
+    font-size: 30px;
 }
 
 .stTextInput > div > div > input {
@@ -17,19 +17,19 @@ body, .stApp {
     border-radius: 5px;
     height: 45px;
     padding-left: 12px;
-    font-size: 18px;
+    font-size: 25px;
     color: black !important;
 }
 
 .stTextInput label {
     font-weight: bold;
     color: #ffffff;
-    font-size: 18px;
+    font-size: 25px;
 }
 
 .result-box {
     background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
+    border-radius: 20px;
     padding: 25px;
     margin-top: 25px;
 }
@@ -37,7 +37,7 @@ body, .stApp {
 .result-box table {
     width: 100%;
     color: white;
-    font-size: 17px;
+    font-size: 25px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -107,8 +107,8 @@ def plot_mutation_positions(dna_normal, dna_mutated):
     ax.scatter(mutation_positions, [1] * len(mutation_positions), color='red', s=200, label='موقع الطفرة')
     ax.set_ylim(0.8, 1.2)
     ax.set_yticks([])
-    ax.set_xlabel('مواقع الكودونات', fontsize=14)
-    ax.set_title('تمثيل رسومي للطفرات على تسلسل DNA', fontsize=16)
+    ax.set_xlabel('Codon Positions', fontsize=20)
+    ax.set_title('Mutation Locations on DNA Sequence', fontsize=25)
     ax.legend(loc='upper right')
     st.pyplot(fig)
 
@@ -120,14 +120,17 @@ normal_dna = st.text_input("🔬 أدخل تسلسل DNA الطبيعي:", "")
 mutated_dna = st.text_input("🧬 أدخل تسلسل DNA بعد الطفرة:", "")
 
 # ✅ عند الإدخال
-if normal_dna and mutated_dna:
-    mrna = transcribe_dna_to_mrna(mutated_dna)
-    protein_normal = translate_mrna_to_protein(transcribe_dna_to_mrna(normal_dna))
-    protein_mutated = translate_mrna_to_protein(mrna)
-
-    mutation_type = detect_mutation_type(normal_dna, mutated_dna)
-    diagnosis = get_known_diagnosis(normal_dna[3:6], mutated_dna[3:6])
-    risk = estimate_risk(protein_normal, protein_mutated)
+if dna_normal and dna_mutated:
+    valid = all(base in "ATCGatcg" for base in dna_normal + dna_mutated)
+    if not valid:
+        st.error("❌ تأكد أن الحروف هي فقط A, T, C, G.")
+            else:
+                mrna = transcribe_dna_to_mrna(mutated_dna)
+                protein_normal = translate_mrna_to_protein(transcribe_dna_to_mrna(normal_dna))
+                protein_mutated = translate_mrna_to_protein(mrna)
+                mutation_type = detect_mutation_type(normal_dna, mutated_dna)
+                diagnosis = get_known_diagnosis(normal_dna[3:6], mutated_dna[3:6])
+                risk = estimate_risk(protein_normal, protein_mutated)
 
     # 💡 عرض النتائج
     st.markdown('<div class="result-box">', unsafe_allow_html=True)

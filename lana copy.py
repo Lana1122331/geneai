@@ -15,16 +15,16 @@ body, .stApp {
 .stTextArea label {
     font-weight: bold;
     color: white !important;
-    font-size: 30px !important;
+    font-size: 25px !important;
 }
 
 /* textarea لـ DNA الطبيعي */
 textarea.stTextArea > div > textarea {
     background-color: white !important;
     color: black !important;
-    font-size: 20px !important;  /* حجم الخط داخل الصندوق */
+    font-size: 18px !important;  /* حجم الخط داخل الصندوق */
     border-radius: 5px !important;
-    height: 100px !important;
+    height: 45px !important;
     padding: 12px !important;
     border: none !important;
     resize: vertical;
@@ -37,7 +37,7 @@ textarea.stTextArea > div > textarea {
     border-radius: 5px;
     height: 45px;
     padding-left: 12px;
-    font-size: 20px;  /* حجم الخط داخل الصندوق */
+    font-size: 18px;  /* حجم الخط داخل الصندوق */
     color: black !important;
 }
 
@@ -51,7 +51,7 @@ textarea.stTextArea > div > textarea {
 /* جدول النتائج: حجم خط أصغر ونص أسود */
 .result-box table {
     width: 100%;
-    font-size: 18px;  /* حجم الخط داخل الجدول أصغر */
+    font-size: 24px;  /* حجم الخط داخل الجدول أصغر */
     border-collapse: collapse;
     color: black !important;
     background-color: white !important;

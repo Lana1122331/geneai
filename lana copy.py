@@ -19,15 +19,14 @@ body, .stApp {
 }
 
 /* textarea لـ DNA الطبيعي */
-textarea.stTextArea > div > textarea {
-    background-color: white !important;
+textarea.stTextArea > div > textarea { 
+    background-color: white;
+    border: none;
+    border-radius: 5px;
+    height: 45px;
+    padding-left: 12px;
+    font-size: 18px;  /* حجم الخط داخل الصندوق */
     color: black !important;
-    font-size: 18px !important;  /* حجم الخط داخل الصندوق */
-    border-radius: 5px !important;
-    height: 45px !important;
-    padding: 12px !important;
-    border: none !important;
-    resize: vertical;
 }
 
 /* input عادي لـ DNA المطفر */

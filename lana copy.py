@@ -1,7 +1,7 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 
-# 🌈 CSS بتصميم جميل + تكبير الخط
+# CSS تصميم جميل
 st.markdown("""
 <style>
 body, .stApp {
@@ -10,7 +10,6 @@ body, .stApp {
     font-family: 'Segoe UI', sans-serif;
     font-size: 30px;
 }
-
 .stTextInput > div > div > input {
     background-color: white;
     border: none;
@@ -20,20 +19,17 @@ body, .stApp {
     font-size: 25px;
     color: black !important;
 }
-
 .stTextInput label {
     font-weight: bold;
     color: #ffffff;
     font-size: 25px;
 }
-
 .result-box {
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 25px;
     margin-top: 25px;
 }
-
 .result-box table {
     width: 100%;
     color: white;
@@ -42,7 +38,7 @@ body, .stApp {
 </style>
 """, unsafe_allow_html=True)
 
-# 🧬 جدول الكودونات
+# جدول الكودونات
 codon_table = {
     'AUG': 'Methionine', 'UUU': 'Phenylalanine', 'UUC': 'Phenylalanine',
     'UUA': 'Leucine', 'UUG': 'Leucine', 'CUU': 'Leucine', 'CUC': 'Leucine',
@@ -94,12 +90,10 @@ def estimate_risk(protein1, protein2):
 
 def plot_mutation_positions(dna_normal, dna_mutated):
     length = min(len(dna_normal), len(dna_mutated))
-    codon_positions = []
     mutation_positions = []
     for i in range(0, length, 3):
         codon_normal = dna_normal[i:i+3].upper()
         codon_mutated = dna_mutated[i:i+3].upper()
-        codon_positions.append(i // 3 + 1)
         if codon_normal != codon_mutated:
             mutation_positions.append(i // 3 + 1)
     fig, ax = plt.subplots(figsize=(10, 2))
@@ -107,48 +101,48 @@ def plot_mutation_positions(dna_normal, dna_mutated):
     ax.scatter(mutation_positions, [1] * len(mutation_positions), color='red', s=200, label='موقع الطفرة')
     ax.set_ylim(0.8, 1.2)
     ax.set_yticks([])
-    ax.set_xlabel('Codon Positions', fontsize=20)
-    ax.set_title('Mutation Locations on DNA Sequence', fontsize=25)
+    ax.set_xlabel('مواقع الكودونات', fontsize=20)
+    ax.set_title('مواقع الطفرات في تسلسل DNA', fontsize=25)
     ax.legend(loc='upper right')
     st.pyplot(fig)
 
-# 🧬 عنوان التطبيق
+# عنوان التطبيق
 st.title("🧬 GeneAI - تحليل الطفرات الجينية")
 
-# 🧬 حقول الإدخال
-normal_dna = st.text_input("🔬 أدخل تسلسل DNA الطبيعي:", "")
-mutated_dna = st.text_input("🧬 أدخل تسلسل DNA بعد الطفرة:", "")
+# حقول الإدخال
+normal_dna = st.text_input("🔬 أدخل تسلسل DNA الطبيعي:")
+mutated_dna = st.text_input("🧬 أدخل تسلسل DNA بعد الطفرة:")
 
-# ✅ عند الإدخال
-if dna_normal and dna_mutated:
-    valid = all(base in "ATCGatcg" for base in dna_normal + dna_mutated)
-if not valid:
-    st.error("❌ تأكد أن الحروف هي فقط A, T, C, G.")
-else:
-    mrna = transcribe_dna_to_mrna(mutated_dna)
-    protein_normal = translate_mrna_to_protein(transcribe_dna_to_mrna(normal_dna))
-    protein_mutated = translate_mrna_to_protein(mrna)
-    mutation_type = detect_mutation_type(normal_dna, mutated_dna)
-    diagnosis = get_known_diagnosis(normal_dna[3:6], mutated_dna[3:6])
-    risk = estimate_risk(protein_normal, protein_mutated)
+# عند الإدخال
+if normal_dna and mutated_dna:
+    valid = all(base in "ATCGatcg" for base in normal_dna + mutated_dna)
+    if not valid:
+        st.error("❌ تأكد أن الحروف هي فقط A, T, C, G.")
+    else:
+        mrna = transcribe_dna_to_mrna(mutated_dna)
+        protein_normal = translate_mrna_to_protein(transcribe_dna_to_mrna(normal_dna))
+        protein_mutated = translate_mrna_to_protein(mrna)
+        mutation_type = detect_mutation_type(normal_dna, mutated_dna)
+        diagnosis = get_known_diagnosis(normal_dna[3:6], mutated_dna[3:6])
+        risk = estimate_risk(protein_normal, protein_mutated)
 
-    # عرض النتائج
-    st.markdown('<div class="result-box">', unsafe_allow_html=True)
-    st.markdown(f"""
-    <table>
-    <tr><td><strong>نوع الطفرة</strong></td><td>{mutation_type}</td></tr>
-    <tr><td><strong>mRNA</strong></td><td>{mrna}</td></tr>
-    <tr><td><strong>البروتين الطبيعي</strong></td><td>{' – '.join(protein_normal)}</td></tr>
-    <tr><td><strong>البروتين المطفر</strong></td><td>{' – '.join(protein_mutated)}</td></tr>
-    <tr><td><strong>التشخيص المحتمل</strong></td><td>{diagnosis}</td></tr>
-    <tr><td><strong>نسبة الخطورة</strong></td><td>{risk}%</td></tr>
-    </table>
-    """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+        # عرض النتائج
+        st.markdown('<div class="result-box">', unsafe_allow_html=True)
+        st.markdown(f"""
+        <table>
+        <tr><td><strong>نوع الطفرة</strong></td><td>{mutation_type}</td></tr>
+        <tr><td><strong>mRNA</strong></td><td>{mrna}</td></tr>
+        <tr><td><strong>البروتين الطبيعي</strong></td><td>{' – '.join(protein_normal)}</td></tr>
+        <tr><td><strong>البروتين المطفر</strong></td><td>{' – '.join(protein_mutated)}</td></tr>
+        <tr><td><strong>التشخيص المحتمل</strong></td><td>{diagnosis}</td></tr>
+        <tr><td><strong>نسبة الخطورة</strong></td><td>{risk}%</td></tr>
+        </table>
+        """, unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
-    # عرض الرسم البياني
-    plot_mutation_positions(normal_dna, mutated_dna)
+        # عرض الرسم البياني
+        plot_mutation_positions(normal_dna, mutated_dna)
 
-# 🏷️ توقيع المشروع في الأسفل
+# توقيع المشروع
 st.markdown("---")
 st.caption("🔖 هذا المشروع من تنفيذ الطالبات: **رغد الضويان** و **لانا الشهراني**")

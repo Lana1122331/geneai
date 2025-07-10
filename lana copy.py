@@ -122,17 +122,17 @@ mutated_dna = st.text_input("🧬 أدخل تسلسل DNA بعد الطفرة:",
 # ✅ عند الإدخال
 if dna_normal and dna_mutated:
     valid = all(base in "ATCGatcg" for base in dna_normal + dna_mutated)
-    if not valid:
-        st.error("❌ تأكد أن الحروف هي فقط A, T, C, G.")
-        else:
-             mrna = transcribe_dna_to_mrna(mutated_dna)
-             protein_normal = translate_mrna_to_protein(transcribe_dna_to_mrna(normal_dna))
-            protein_mutated = translate_mrna_to_protein(mrna)
-            mutation_type = detect_mutation_type(normal_dna, mutated_dna)
-             diagnosis = get_known_diagnosis(normal_dna[3:6], mutated_dna[3:6])
-            risk = estimate_risk(protein_normal, protein_mutated)
+if not valid:
+    st.error("❌ تأكد أن الحروف هي فقط A, T, C, G.")
+else:
+    mrna = transcribe_dna_to_mrna(mutated_dna)
+    protein_normal = translate_mrna_to_protein(transcribe_dna_to_mrna(normal_dna))
+    protein_mutated = translate_mrna_to_protein(mrna)
+    mutation_type = detect_mutation_type(normal_dna, mutated_dna)
+    diagnosis = get_known_diagnosis(normal_dna[3:6], mutated_dna[3:6])
+    risk = estimate_risk(protein_normal, protein_mutated)
 
-    # 💡 عرض النتائج
+    # عرض النتائج
     st.markdown('<div class="result-box">', unsafe_allow_html=True)
     st.markdown(f"""
     <table>
@@ -146,7 +146,7 @@ if dna_normal and dna_mutated:
     """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # 🔬 عرض الرسم البياني لمواقع الطفرات
+    # عرض الرسم البياني
     plot_mutation_positions(normal_dna, mutated_dna)
 
 # 🏷️ توقيع المشروع في الأسفل

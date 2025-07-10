@@ -1,41 +1,43 @@
 import streamlit as st
+import matplotlib.pyplot as plt
 
-# 🌈 CSS بتصميم جميل مثل الصورة اللي أرسلتها
+# 🌈 CSS بتصميم جميل + تكبير الخط
 st.markdown("""
 <style>
 body, .stApp {
     background: linear-gradient(to bottom right, #044B7F, #00A5A0);
     color: white;
     font-family: 'Segoe UI', sans-serif;
+    font-size: 20px;
 }
 
 .stTextInput > div > div > input {
     background-color: white;
     border: none;
     border-radius: 5px;
-    height: 40px;
-    padding-left: 10px;
-    font-size: 16px;
+    height: 45px;
+    padding-left: 12px;
+    font-size: 18px;
     color: black !important;
 }
 
 .stTextInput label {
     font-weight: bold;
     color: #ffffff;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .result-box {
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 12px;
-    padding: 20px;
-    margin-top: 20px;
+    padding: 25px;
+    margin-top: 25px;
 }
 
 .result-box table {
     width: 100%;
     color: white;
-    font-size: 15px;
+    font-size: 17px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -90,6 +92,26 @@ def estimate_risk(protein1, protein2):
     length = max(len(protein1), len(protein2))
     return int((diff / length) * 100)
 
+def plot_mutation_positions(dna_normal, dna_mutated):
+    length = min(len(dna_normal), len(dna_mutated))
+    codon_positions = []
+    mutation_positions = []
+    for i in range(0, length, 3):
+        codon_normal = dna_normal[i:i+3].upper()
+        codon_mutated = dna_mutated[i:i+3].upper()
+        codon_positions.append(i // 3 + 1)
+        if codon_normal != codon_mutated:
+            mutation_positions.append(i // 3 + 1)
+    fig, ax = plt.subplots(figsize=(10, 2))
+    ax.hlines(1, 1, len(dna_normal) // 3, colors='white', linewidth=3)
+    ax.scatter(mutation_positions, [1] * len(mutation_positions), color='red', s=200, label='موقع الطفرة')
+    ax.set_ylim(0.8, 1.2)
+    ax.set_yticks([])
+    ax.set_xlabel('مواقع الكودونات', fontsize=14)
+    ax.set_title('تمثيل رسومي للطفرات على تسلسل DNA', fontsize=16)
+    ax.legend(loc='upper right')
+    st.pyplot(fig)
+
 # 🧬 عنوان التطبيق
 st.title("🧬 GeneAI - تحليل الطفرات الجينية")
 
@@ -120,3 +142,10 @@ if normal_dna and mutated_dna:
     </table>
     """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
+
+    # 🔬 عرض الرسم البياني لمواقع الطفرات
+    plot_mutation_positions(normal_dna, mutated_dna)
+
+# 🏷️ توقيع المشروع في الأسفل
+st.markdown("---")
+st.caption("🔖 هذا المشروع من تنفيذ الطالبات: **رغد الضويان** و **لانا الشهراني**")

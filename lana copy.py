@@ -1,6 +1,7 @@
 import streamlit as st
+import matplotlib.pyplot as plt
 
-# 🌈 CSS للتصميم الخارجي
+# 🎨 تنسيق CSS للتصميم
 st.markdown("""
 <style>
 body, .stApp {
@@ -8,32 +9,32 @@ body, .stApp {
     color: white;
     font-family: 'Segoe UI', sans-serif;
 }
-input {
+input, .stTextInput > div > div > input {
+    background-color: white !important;
     color: black !important;
+    border-radius: 6px !important;
+    height: 38px !important;
+    padding-left: 10px !important;
+    font-size: 16px !important;
 }
-.stTextInput > div > div > input {
-    background-color: white;
-    border: none;
-    border-radius: 5px;
-    height: 40px;
-    padding-left: 10px;
-    font-size: 16px;
-}
-.stTextInput label {
-    font-weight: bold;
-    color: #ffffff;
-    font-size: 16px;
+h1, h2, h3 {
+    color: #ffcc00;
 }
 .result-box {
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     padding: 20px;
-    margin-top: 20px;
+    margin-top: 25px;
+    color: #fff;
+    font-size: 16px;
 }
-.result-box table {
+table {
     width: 100%;
-    color: white;
-    font-size: 15px;
+    border-collapse: collapse;
+}
+table td {
+    padding: 10px 15px;
+    border-bottom: 1px solid #555;
 }
 </style>
 """, unsafe_allow_html=True)

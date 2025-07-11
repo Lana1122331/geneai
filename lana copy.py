@@ -16,19 +16,19 @@ body, .stApp {
     border-radius: 5px;
     height: 45px;
     padding-left: 12px;
-    font-size: 25px;
+    font-size: 20px;
     color: black !important;
 }
 .stTextInput label {
     font-weight: bold;
     color: #ffffff;
-    font-size: 25px;
+    font-size: 20px;
 }
 .result-box {
     background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 25px;
-    margin-top: 25px;
+    border-radius: 25px;
+    padding: 30px;
+    margin-top: 30px;
 }
 .result-box table {
     width: 100%;

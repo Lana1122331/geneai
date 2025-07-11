@@ -98,11 +98,11 @@ def plot_mutation_positions(dna_normal, dna_mutated):
             mutation_positions.append(i // 3 + 1)
     fig, ax = plt.subplots(figsize=(10, 2))
     ax.hlines(1, 1, len(dna_normal) // 3, colors='white', linewidth=3)
-    ax.scatter(mutation_positions, [1] * len(mutation_positions), color='red', s=200, label='موقع الطفرة')
+    ax.scatter(mutation_positions, [1] * len(mutation_positions), color='red', s=200, label='Mutation Site')
     ax.set_ylim(0.8, 1.2)
     ax.set_yticks([])
-    ax.set_xlabel('مواقع الكودونات', fontsize=20)
-    ax.set_title('مواقع الطفرات في تسلسل DNA', fontsize=25)
+    ax.set_xlabel('Codon Positions', fontsize=20)
+    ax.set_title('Mutation Sites in the DNA Sequence', fontsize=25)
     ax.legend(loc='upper right')
     st.pyplot(fig)
 
@@ -110,8 +110,8 @@ def plot_mutation_positions(dna_normal, dna_mutated):
 st.title("🧬 GeneAI - تحليل الطفرات الجينية")
 
 # حقول الإدخال
-normal_dna = st.text_input("🔬 أدخل تسلسل DNA الطبيعي:")
-mutated_dna = st.text_input("🧬 أدخل تسلسل DNA بعد الطفرة:")
+normal_dna = st.text_input(" أدخل تسلسل DNA الطبيعي:")
+mutated_dna = st.text_input(" أدخل تسلسل DNA بعد الطفرة:")
 
 # عند الإدخال
 if normal_dna and mutated_dna:
